@@ -1,43 +1,53 @@
+
+
+
 //+------------------------------------------------------------------------+
 //|                                                  EA DB + SnR + SnD.mq4 |
 //+------------------------------------------------------------------------+
 #property copyright "Trading-Dong | FER WES RIK"
 #property version   "1.2"
 
+
+
+
 datetime EAExpired = D'2023.03.31';    //Ea Expiration Date
 
+
+
 //| Expert Initialization function |
+
+
+
+
+
 
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 
+
+
+
+
+
+
+
 // Initialization for SnR
-extern bool Use_Sunday_Data = TRUE;
 extern bool Daily = TRUE;
 extern bool Daily_SR_Levels = TRUE;
-extern bool Daily_Mid_Levels = FALSE;
-extern bool Weekly = TRUE;
-extern bool Weekly_SR_Levels = FALSE;
-extern bool Weekly_Mid_Levels = FALSE;
-extern bool Monthly = TRUE;
-extern bool Monthly_SR_Levels = FALSE;
-extern bool Monthly_Mid_Levels = FALSE;
+
+
+
+
 
 extern color Daily_Pivot = Blue;
 extern color Daily_S_Levels = LimeGreen;
 extern color Daily_R_Levels = Red;
-extern color Daily_Mid_Level = Yellow;
 
-extern color Weekly_Pivot = Fuchsia;
-extern color Weekly_S_Levels = SteelBlue;
-extern color Weekly_R_Levels = Peru;
-extern color Weekly_Mid_Level = LightPink;
 
-extern color Monthly_Pivot = Gray;
-extern color Monthly_S_Levels = Orange;
-extern color Monthly_R_Levels = Blue;
-extern color Monthly_Mid_Level = LightSalmon;
+
+
+
 
 double Gd_164;
 double Gd_172;
@@ -50,30 +60,19 @@ double G_price_216;
 double G_price_224;
 double G_price_232;
 double G_price_240;
-double G_price_248;
-double G_price_256;
-double G_price_264;
-double G_price_272;
-double G_price_280;
-double G_price_288;
-double Gd_428;
-double Gd_436;
-double Gd_444;
-double Gda_452[][6];
-double G_price_456;
-double G_price_464;
-double G_price_472;
-double G_price_480;
-double G_price_488;
-double G_price_496;
-double G_price_504;
-double G_price_512;
-double G_price_520;
-double G_price_528;
-double G_price_536;
-double G_price_544;
-double G_price_552;
-double lotvolumeW ;                    //Lot volume of each trade
+
+
+
+
+
+
+
+
+
+
+
+
+double lotvolumeW ;                    //Lot volume of each trade 75
 double stopLossW ;
 double takeProfitW ;
 bool snr;
@@ -339,6 +338,7 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
    //   Alert("Trading-Dong is Expired!!");
    //   Print(__FUNCTION__," Trading-Dong will be unloaded");
    //  }
+
 
 //Detect Pair
 //=== Pair XAUUSD (1 Pips = 0.1 Points of Price or 1 Pips = Value x 1000) ===
@@ -1018,7 +1018,7 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
       Gd_164 = Gda_188[1][3];// 3 = high
       Gd_172 = Gda_188[1][2];// 2 = low
       Gd_180 = Gda_188[1][4];// 4 = close
-
+      
       G_price_192 = (Gd_164 + Gd_172 + Gd_180) / 3.0;             // (Pivot Point) DAY
       G_price_224 = 2.0 * G_price_192 - Gd_172;                   // (2 * PP-low  = (R1) woodie method
       G_price_200 = 2.0 * G_price_192 - Gd_164;                   // 2 * PP-high = (S1)  woodie method
@@ -1029,37 +1029,19 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
       G_price_240 = Gd_164 + 2.0 * (G_price_192 - Gd_172);        // H + R1      = (R3)   
       G_price_216 = Gd_172 - 2.0 * (Gd_164 - G_price_192);        // L - (H-PP)  = (S3)
 
-      G_price_248 = G_price_216 + (G_price_208 - G_price_216) / 2.0;// S3 + (R2-S3) / 2 // average (S3+(R2-S3))
-      G_price_256 = G_price_208 + (G_price_200 - G_price_208) / 2.0;// R2 + (S1-R2) / 2 // average (R2+(S1-R2))
-      G_price_264 = G_price_200 + (G_price_192 - G_price_200) / 2.0;// S1 + (PP-S1) / 2 // average (S1+(PP-S1))
-      G_price_272 = G_price_192 + (G_price_224 - G_price_192) / 2.0;// PP + (R1-PP) / 2 // average (PP+(R1-PP))
-      G_price_280 = G_price_224 + (G_price_232 - G_price_224) / 2.0;// R1 + (R2-R1) / 2 // average (R1+(R2-R1))
-
-      G_price_288 = G_price_232 + (G_price_240 - G_price_232) / 2.0;// R2 + (R3-R2) / 2 // average (R2+(R3-R2))
-
       // ===awal=== tembus bawah || tembus atas
      if( ((RSIValue<=30) && ((Open[1] > G_price_200) && (Close[1] < G_price_200)) || ((RSIValue<=30) && (Open[1] < G_price_200) && (Close[1] > G_price_200))) || // 200=S1
          ((RSIValue<=30) && ((Open[1] > G_price_224) && (Close[1] < G_price_224)) || ((RSIValue<=30) && (Open[1] < G_price_224) && (Close[1] > G_price_224))) || // 224=R1
          ((RSIValue<=30) && ((Open[1] > G_price_232) && (Close[1] < G_price_232)) || ((RSIValue<=30) && (Open[1] < G_price_232) && (Close[1] > G_price_232))) || // 232=R2
          ((RSIValue<=30) && ((Open[1] > G_price_208) && (Close[1] < G_price_208)) || ((RSIValue<=30) && (Open[1] < G_price_208) && (Close[1] > G_price_208))) || // 208=S2
          ((RSIValue<=30) && ((Open[1] > G_price_240) && (Close[1] < G_price_240)) || ((RSIValue<=30) && (Open[1] < G_price_240) && (Close[1] > G_price_240))) || // 240=R3
-         ((RSIValue<=30) && ((Open[1] > G_price_216) && (Close[1] < G_price_216)) || ((RSIValue<=30) && (Open[1] < G_price_216) && (Close[1] > G_price_216))) || // 216=S3
-         ((RSIValue<=30) && ((Open[1] > G_price_248) && (Close[1] < G_price_248)) || ((RSIValue<=30) && (Open[1] < G_price_248) && (Close[1] > G_price_248))) || // 248=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_256) && (Close[1] < G_price_256)) || ((RSIValue<=30) && (Open[1] < G_price_256) && (Close[1] > G_price_256))) || // 256=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_264) && (Close[1] < G_price_264)) || ((RSIValue<=30) && (Open[1] < G_price_264) && (Close[1] > G_price_264))) || // 264=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_272) && (Close[1] < G_price_272)) || ((RSIValue<=30) && (Open[1] < G_price_272) && (Close[1] > G_price_272))) || // 272=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_280) && (Close[1] < G_price_280)) || ((RSIValue<=30) && (Open[1] < G_price_280) && (Close[1] > G_price_280))) || // 280=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_288) && (Close[1] < G_price_288)) || ((RSIValue<=30) && (Open[1] < G_price_288) && (Close[1] > G_price_288)))  // 288=AVER
-                                                                                                                                            // RSI nya dibawah atau samadengan 20                                                         
-        )
-         // Jika harga close sebelumnya lebih rendah dari S1 
+         ((RSIValue<=30) && ((Open[1] > G_price_216) && (Close[1] < G_price_216)) || ((RSIValue<=30) && (Open[1] < G_price_216) && (Close[1] > G_price_216)))    // 216=S3                                                      
+        )   
          {
          // Buka posisi buy
-         sinyal="buy";         
-         
+         sinyal="buy";   
          int maxTradesPerOrder1 = 1; // Maximum number of trades per order
          int totalTrades1 = 0; // Variable to keep track of the number of trades
-         
          if (totalTrades1 < maxTradesPerOrder1)
             {
                 int ticket1 = OrderSend(Symbol(), OP_BUYLIMIT, lotvolumeW, Ask, 300, Bid - stopLossW, Bid + takeProfitW, "SnR Buy order D1", 0, TimeCurrent()+pendingexp, Green);
@@ -1082,17 +1064,9 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
           ((RSIValue>=70) && ((Open[1] > G_price_232) && (Close[1] < G_price_232)) || ((RSIValue>=70) && (Open[1] < G_price_232) && (Close[1] > G_price_232))) || // 232=R2
           ((RSIValue>=70) && ((Open[1] > G_price_208) && (Close[1] < G_price_208)) || ((RSIValue>=70) && (Open[1] < G_price_208) && (Close[1] > G_price_208))) || // 208=S2
           ((RSIValue>=70) && ((Open[1] > G_price_240) && (Close[1] < G_price_240)) || ((RSIValue>=70) && (Open[1] < G_price_240) && (Close[1] > G_price_240))) || // 240=R3
-         // ((RSIValue>=70) && ((Open[1] > G_price_240) && (Close[1] > G_price_240))) || // sell ketika rsi>=70 dan harga open dan close diatas R3
-          ((RSIValue>=70) && ((Open[1] > G_price_216) && (Close[1] < G_price_216)) || ((RSIValue>=70) && (Open[1] < G_price_216) && (Close[1] > G_price_216))) || // 216=S3
-          ((RSIValue>=70) && ((Open[1] > G_price_248) && (Close[1] < G_price_248)) || ((RSIValue>=70) && (Open[1] < G_price_248) && (Close[1] > G_price_248))) || // 248=AVER
-          ((RSIValue>=70) && ((Open[1] > G_price_256) && (Close[1] < G_price_256)) || ((RSIValue>=70) && (Open[1] < G_price_256) && (Close[1] > G_price_256))) || // 256=AVER
-          ((RSIValue>=70) && ((Open[1] > G_price_264) && (Close[1] < G_price_264)) || ((RSIValue>=70) && (Open[1] < G_price_264) && (Close[1] > G_price_264))) || // 264=AVER
-          ((RSIValue>=70) && ((Open[1] > G_price_272) && (Close[1] < G_price_272)) || ((RSIValue>=70) && (Open[1] < G_price_272) && (Close[1] > G_price_272))) || // 272=AVER
-          ((RSIValue>=70) && ((Open[1] > G_price_280) && (Close[1] < G_price_280)) || ((RSIValue>=70) && (Open[1] < G_price_280) && (Close[1] > G_price_280))) || // 280=AVER
-          ((RSIValue>=70) && ((Open[1] > G_price_288) && (Close[1] < G_price_288)) || ((RSIValue>=70) && (Open[1] < G_price_288) && (Close[1] > G_price_288)))  // 288=AVER
+          ((RSIValue>=70) && ((Open[1] > G_price_216) && (Close[1] < G_price_216)) || ((RSIValue>=70) && (Open[1] < G_price_216) && (Close[1] > G_price_216)))    // 216=S3
                                                                                                            // RSI nya dibawah atau samadengan 20
-           )   // 272=AVER; 280=AVER
-            // Jika harga close sebelumnya lebih tinggi dari S1
+           )   
            {
             // Buka posisi sell
             sinyal="sell";
@@ -1118,106 +1092,8 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
            }
            
          // ===akhir===
-         
-      // ----END OF SELASA-JUMAT----
 
 
-
-
-
-
-
-      //----MONTHLY----
-      ArrayCopyRates(Gda_452, Symbol(), PERIOD_MN1); //MN = Monthly
-      Gd_428 = Gda_452[1][3];                                 // high
-      Gd_436 = Gda_452[1][2];                                 // low
-      Gd_444 = Gda_452[1][4];                                 // close
-
-      G_price_456 = (Gd_428 + Gd_436 + Gd_444) / 3.0;         // PP MN
-      G_price_488 = 2.0 * G_price_456 - Gd_436;               // 2 * PP-low  = (R1)
-      G_price_464 = 2.0 * G_price_456 - Gd_428;               // 2 * PP-high = (S1)
-
-      G_price_496 = G_price_456 + (G_price_488 - G_price_464);// PP + (R1-S1) = (R2)
-      G_price_472 = G_price_456 - (G_price_488 - G_price_464);// PP - (R1-S1) = (S2)
-
-      G_price_480 = Gd_436 - 2.0 * (Gd_428 - G_price_456);    // H + R1      = (R3)
-      G_price_504 = Gd_428 + 2.0 * (G_price_456 - Gd_436);    // L - (H-PP)  = (S3)
-
-      G_price_512 = G_price_480 + (G_price_472 - G_price_480) / 2.0; // S3 + (R2-S3) / 2
-      G_price_520 = G_price_472 + (G_price_464 - G_price_472) / 2.0; // R2 + (S1-R2) / 2
-      G_price_528 = G_price_464 + (G_price_456 - G_price_464) / 2.0; // S1 + (PP-S1) / 2
-      G_price_536 = G_price_456 + (G_price_488 - G_price_456) / 2.0; // PP + (R1-PP) / 2
-      G_price_544 = G_price_488 + (G_price_496 - G_price_488) / 2.0; // R1 + (R2-R1) / 2
-      G_price_552 = G_price_496 + (G_price_504 - G_price_496) / 2.0; // R2 + (R3-R2) / 2
-
-      // ===awal===
-     if( ((RSIValue<=30) && ((Open[1] > G_price_464) && (Close[1] < G_price_464)) || ((RSIValue<=30) && (Open[1] < G_price_464) && (Close[1] > G_price_464)) ) || // 464=S1
-         ((RSIValue<=30) && ((Open[1] > G_price_488) && (Close[1] < G_price_488)) || ((RSIValue<=30) && (Open[1] < G_price_488) && (Close[1] > G_price_488)) ) || // 488=R1
-         ((RSIValue<=30) && ((Open[1] > G_price_496) && (Close[1] < G_price_496)) || ((RSIValue<=30) && (Open[1] < G_price_496) && (Close[1] > G_price_496)) ) || // 496=R2
-         ((RSIValue<=30) && ((Open[1] > G_price_472) && (Close[1] < G_price_472)) || ((RSIValue<=30) && (Open[1] < G_price_472) && (Close[1] > G_price_472)) ) || // 472=S2
-         ((RSIValue<=30) && ((Open[1] > G_price_480) && (Close[1] < G_price_480)) || ((RSIValue<=30) && (Open[1] < G_price_480) && (Close[1] > G_price_480)) ) || // 480=R3
-         ((RSIValue<=30) && ((Open[1] > G_price_504) && (Close[1] < G_price_504)) || ((RSIValue<=30) && (Open[1] < G_price_504) && (Close[1] > G_price_504)) ) || // 504=S3
-         ((RSIValue<=30) && ((Open[1] > G_price_512) && (Close[1] < G_price_512)) || ((RSIValue<=30) && (Open[1] < G_price_512) && (Close[1] > G_price_512)) ) || // 512=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_520) && (Close[1] < G_price_520)) || ((RSIValue<=30) && (Open[1] < G_price_520) && (Close[1] > G_price_520)) ) || // 520=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_528) && (Close[1] < G_price_528)) || ((RSIValue<=30) && (Open[1] < G_price_528) && (Close[1] > G_price_528)) ) || // 528=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_536) && (Close[1] < G_price_536)) || ((RSIValue<=30) && (Open[1] < G_price_536) && (Close[1] > G_price_536)) ) || // 536=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_544) && (Close[1] < G_price_544)) || ((RSIValue<=30) && (Open[1] < G_price_544) && (Close[1] > G_price_544)) ) || // 544=AVER
-         ((RSIValue<=30) && ((Open[1] > G_price_552) && (Close[1] < G_price_552)) || ((RSIValue<=30) && (Open[1] < G_price_552) && (Close[1] > G_price_552)) )  // 552=AVER
-      
-         )                                                                                                              // RSI nya dibawah atau samadengan 20
-         // Jika harga close sebelumnya lebih rendah dari S1
-         {
-         // Buka posisi buy
-         sinyal="buy";
-         int maxTradesPerOrder3 = 1; // Maximum number of trades per order
-         int totalTrades3 = 0; // Variable to keep track of the number of trades
-         
-         if (totalTrades3 < maxTradesPerOrder3)
-            {
-                int ticket9 = OrderSend(Symbol(), OP_BUYLIMIT, lotvolumeW, Ask, 300, Bid - stopLossW, Bid + takeProfitW, "SnR Buy order MN1", 0, TimeCurrent()+pendingexp, Green);
-                totalTrades3++; // Increment the total trades count
-            }
-         
-         
-        }
-
-     if( ((RSIValue>=70) && ((Open[1] > G_price_464) && (Close[1] < G_price_464)) || ((RSIValue>=70) && (Open[1] < G_price_464) && (Close[1] > G_price_464)) ) || // 464=S1
-         ((RSIValue>=70) && ((Open[1] > G_price_488) && (Close[1] < G_price_488)) || ((RSIValue>=70) && (Open[1] < G_price_488) && (Close[1] > G_price_488)) ) || // 488=R1
-         ((RSIValue>=70) && ((Open[1] > G_price_496) && (Close[1] < G_price_496)) || ((RSIValue>=70) && (Open[1] < G_price_496) && (Close[1] > G_price_496)) ) || // 496=R2
-         ((RSIValue>=70) && ((Open[1] > G_price_472) && (Close[1] < G_price_472)) || ((RSIValue>=70) && (Open[1] < G_price_472) && (Close[1] > G_price_472)) ) || // 472=S2         
-         ((RSIValue>=70) && ((Open[1] > G_price_480) && (Close[1] < G_price_480)) || ((RSIValue>=70) && (Open[1] < G_price_480) && (Close[1] > G_price_480)) ) || // 480=R3
-         
-         //((RSIValue>=70) && ((Open[1] > G_price_480) && (Close[1] > G_price_480))) ||// sell ketika rsi>=70 dan harga open dan close diatas R3
-         ((RSIValue>=70) && ((Open[1] > G_price_504) && (Close[1] < G_price_504)) || ((RSIValue>=70) && (Open[1] < G_price_504) && (Close[1] > G_price_504)) ) || // 504=S3
-         ((RSIValue>=70) && ((Open[1] > G_price_512) && (Close[1] < G_price_512)) || ((RSIValue>=70) && (Open[1] < G_price_512) && (Close[1] > G_price_512)) ) || // 512=AVER
-         ((RSIValue>=70) && ((Open[1] > G_price_520) && (Close[1] < G_price_520)) || ((RSIValue>=70) && (Open[1] < G_price_520) && (Close[1] > G_price_520)) ) || // 520=AVER
-         ((RSIValue>=70) && ((Open[1] > G_price_528) && (Close[1] < G_price_528)) || ((RSIValue>=70) && (Open[1] < G_price_528) && (Close[1] > G_price_528)) ) || // 528=AVER
-         ((RSIValue>=70) && ((Open[1] > G_price_536) && (Close[1] < G_price_536)) || ((RSIValue>=70) && (Open[1] < G_price_536) && (Close[1] > G_price_536)) ) || // 536=AVER
-         ((RSIValue>=70) && ((Open[1] > G_price_544) && (Close[1] < G_price_544)) || ((RSIValue>=70) && (Open[1] < G_price_544) && (Close[1] > G_price_544)) ) || // 544=AVER
-         ((RSIValue>=70) && ((Open[1] > G_price_552) && (Close[1] < G_price_552)) || ((RSIValue>=70) && (Open[1] < G_price_552) && (Close[1] > G_price_552)) )    // 552=AVER                                                                                                                // RSI nya diatas atau samadengan 75
-           )
-           // Jika harga close sebelumnya lebih tinggi dari S1
-           {
-            // Buka posisi sell
-            sinyal="sell";
-            
-            int maxTradesPerOrder4 = 1; // Maximum number of trades per order
-            int totalTrades4 = 0; // Variable to keep track of the number of trades
-         
-            if (totalTrades4 < maxTradesPerOrder3)
-            {
-                int ticket10 = OrderSend(Symbol(), OP_SELLLIMIT, lotvolumeW, Bid, 300, Ask + stopLossW, Ask - takeProfitW, "SnR Sell order MN1", 0, TimeCurrent()+pendingexp, Red);
-                totalTrades4++; // Increment the total trades count
-            }
-            
-            
-            
-           }
-           
-         // ===akhir=== 
- 
- 
-      //----END OF MONTHLY----
       if(Daily == TRUE)
         {
          TimeToStr(TimeCurrent()); // buat garis, ditentukan dari timecurrent nya
@@ -1341,325 +1217,6 @@ if(NewBar()==true) //Jika ada candle baru, maka akan menjalankan fungsi ini
 
            }
          WindowRedraw(); // Menggambar ulang grafik
-        }
-
-      // LOOPING DAILY MID
-      if(Daily_Mid_Levels == TRUE)
-        {
-         if(ObjectFind("DM1_Line") != 0)
-           {
-            ObjectCreate("DM1_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_248);
-            ObjectSet("DM1_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM1_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM1_Line", 0, Time[15], G_price_248);
-         if(ObjectFind("DM1_Label") != 0)
-           {
-            ObjectCreate("DM1_Label", OBJ_TEXT, 0, Time[15], G_price_248);
-            ObjectSetText("DM1_Label", "DM1", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM1_Label", 0, Time[15], G_price_248);
-
-         if(ObjectFind("DM2_Line") != 0)
-           {
-            ObjectCreate("DM2_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_256);
-            ObjectSet("DM2_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM2_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM2_Line", 0, Time[15], G_price_256);
-         if(ObjectFind("DM2_Label") != 0)
-           {
-            ObjectCreate("DM2_Label", OBJ_TEXT, 0, Time[15], G_price_256);
-            ObjectSetText("DM2_Label", "DM2", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM2_Label", 0, Time[15], G_price_256);
-
-         if(ObjectFind("DM3_Line") != 0)
-           {
-            ObjectCreate("DM3_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_264);
-            ObjectSet("DM3_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM3_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM3_Line", 0, Time[15], G_price_264);
-         if(ObjectFind("DM3_Label") != 0)
-           {
-            ObjectCreate("DM3_Label", OBJ_TEXT, 0, Time[15], G_price_264);
-            ObjectSetText("DM3_Label", "DM3", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM3_Label", 0, Time[15], G_price_264);
-
-         if(ObjectFind("DM4_Line") != 0)
-           {
-            ObjectCreate("DM4_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_272);
-            ObjectSet("DM4_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM4_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM4_Line", 0, Time[15], G_price_272);
-         if(ObjectFind("DM4_Label") != 0)
-           {
-            ObjectCreate("DM4_Label", OBJ_TEXT, 0, Time[15], G_price_272);
-            ObjectSetText("DM4_Label", "DM4", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM4_Label", 0, Time[15], G_price_272);
-
-         if(ObjectFind("DM5_Line") != 0)
-           {
-            ObjectCreate("DM5_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_280);
-            ObjectSet("DM5_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM5_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM5_Line", 0, Time[15], G_price_280);
-         if(ObjectFind("DM5_Label") != 0)
-           {
-            ObjectCreate("DM5_Label", OBJ_TEXT, 0, Time[15], G_price_280);
-            ObjectSetText("DM5_Label", "DM5", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM5_Label", 0, Time[15], G_price_280);
-
-         if(ObjectFind("DM6_Line") != 0)
-           {
-            ObjectCreate("DM6_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_288);
-            ObjectSet("DM6_Line", OBJPROP_COLOR, Daily_Mid_Level);
-            ObjectSet("DM6_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("DM6_Line", 0, Time[15], G_price_288);
-         if(ObjectFind("DM6_Label") != 0)
-           {
-            ObjectCreate("DM6_Label", OBJ_TEXT, 0, Time[15], G_price_288);
-            ObjectSetText("DM6_Label", "DM6", 8, "Arial", Daily_Mid_Level);
-           }
-         else
-            ObjectMove("DM6_Label", 0, Time[15], G_price_288);
-         WindowRedraw();
-        }
-
-      if(Monthly == TRUE)
-        {
-         if(ObjectFind("MonthPivotLine") != 0)
-           {
-            ObjectCreate("MonthPivotLine", OBJ_HLINE, 0, TimeCurrent(), G_price_456);
-            ObjectSet("MonthPivotLine", OBJPROP_COLOR, Monthly_Pivot);
-            ObjectSet("MonthPivotLine", OBJPROP_STYLE, STYLE_DASH);
-           }
-         else
-            ObjectMove("MonthPivotLine", 0, Time[40], G_price_456);
-         if(ObjectFind("MonthPivotLabel") != 0)
-           {
-            ObjectCreate("MonthPivotLabel", OBJ_TEXT, 0, Time[40], G_price_456);
-            ObjectSetText("MonthPivotLabel", "MonthlyPivot", 8, "Arial", Monthly_Pivot);
-           }
-         else
-            ObjectMove("MonthPivotLabel", 0, Time[40], G_price_456);
-
-         if(Monthly_SR_Levels == TRUE)
-           {
-            if(ObjectFind("MR1_Line") != 0)
-              {
-               ObjectCreate("MR1_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_488);
-               ObjectSet("MR1_Line", OBJPROP_COLOR, Monthly_R_Levels);
-               ObjectSet("MR1_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MR1_Line", 0, Time[40], G_price_488);
-            if(ObjectFind("MR1_Label") != 0)
-              {
-               ObjectCreate("MR1_Label", OBJ_TEXT, 0, Time[40], G_price_488);
-               ObjectSetText("MR1_Label", " Monthly R1", 8, "Arial", Monthly_R_Levels);
-              }
-            else
-               ObjectMove("MR1_Label", 0, Time[40], G_price_488);
-
-            if(ObjectFind("MR2_Line") != 0)
-              {
-               ObjectCreate("MR2_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_496);
-               ObjectSet("MR2_Line", OBJPROP_COLOR, Monthly_R_Levels);
-               ObjectSet("MR2_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MR2_Line", 0, Time[40], G_price_496);
-            if(ObjectFind("MR2_Label") != 0)
-              {
-               ObjectCreate("MR2_Label", OBJ_TEXT, 0, Time[40], G_price_496);
-               ObjectSetText("MR2_Label", " Monthly R2", 8, "Arial", Monthly_R_Levels);
-              }
-            else
-               ObjectMove("MR2_Label", 0, Time[40], G_price_496);
-
-            if(ObjectFind("MR3_Line") != 0)
-              {
-               ObjectCreate("MR3_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_504);
-               ObjectSet("MR3_Line", OBJPROP_COLOR, Monthly_R_Levels);
-               ObjectSet("MR3_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MR3_Line", 0, Time[40], G_price_504);
-            if(ObjectFind("MR3_Label") != 0)
-              {
-               ObjectCreate("MR3_Label", OBJ_TEXT, 0, Time[40], G_price_504);
-               ObjectSetText("MR3_Label", " Monthly R3", 8, "Arial", Monthly_R_Levels);
-              }
-            else
-               ObjectMove("MR3_Label", 0, Time[40], G_price_504);
-
-            if(ObjectFind("MS1_Line") != 0)
-              {
-               ObjectCreate("MS1_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_464);
-               ObjectSet("MS1_Line", OBJPROP_COLOR, Monthly_S_Levels);
-               ObjectSet("MS1_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MS1_Line", 0, Time[40], G_price_464);
-            if(ObjectFind("MS1_Label") != 0)
-              {
-               ObjectCreate("MS1_Label", OBJ_TEXT, 0, Time[40], G_price_464);
-               ObjectSetText("MS1_Label", "Monthly S1", 8, "Arial", Monthly_S_Levels);
-              }
-            else
-               ObjectMove("MS1_Label", 0, Time[40], G_price_464);
-
-            if(ObjectFind("MS2_Line") != 0)
-              {
-               ObjectCreate("MS2_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_472);
-               ObjectSet("MS2_Line", OBJPROP_COLOR, Monthly_S_Levels);
-               ObjectSet("MS2_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MS2_Line", 0, Time[40], G_price_472);
-            if(ObjectFind("MS2_Label") != 0)
-              {
-               ObjectCreate("MS2_Label", OBJ_TEXT, 0, Time[40], G_price_472);
-               ObjectSetText("MS2_Label", "Monthly S2", 8, "Arial", Monthly_S_Levels);
-              }
-            else
-               ObjectMove("MS2_Label", 0, Time[40], G_price_472);
-
-            if(ObjectFind("MS3_Line") != 0)
-              {
-               ObjectCreate("MS3_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_480);
-               ObjectSet("MS3_Line", OBJPROP_COLOR, Monthly_S_Levels);
-               ObjectSet("MS3_Line", OBJPROP_STYLE, STYLE_DASHDOTDOT);
-              }
-            else
-               ObjectMove("MS3_Line", 0, Time[40], G_price_480);
-            if(ObjectFind("MS3_Label") != 0)
-              {
-               ObjectCreate("MS3_Label", OBJ_TEXT, 0, Time[40], G_price_480);
-               ObjectSetText("MS3_Label", "Monthly S3", 8, "Arial", Monthly_S_Levels);
-              }
-            else
-               ObjectMove("MS3_Label", 0, Time[40], G_price_480);
-           }
-        }
-
-      if(Monthly_Mid_Levels == TRUE)
-        {
-         if(ObjectFind("MM1_Line") != 0)
-           {
-            ObjectCreate("MM1_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_512);
-            ObjectSet("MM1_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM1_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM1_Line", 0, Time[35], G_price_512);
-         if(ObjectFind("MM1_Label") != 0)
-           {
-            ObjectCreate("MM1_Label", OBJ_TEXT, 0, Time[35], G_price_512);
-            ObjectSetText("MM1_Label", "MM1", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM1_Label", 0, Time[35], G_price_512);
-
-         if(ObjectFind("MM2_Line") != 0)
-           {
-            ObjectCreate("MM2_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_520);
-            ObjectSet("MM2_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM2_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM2_Line", 0, Time[35], G_price_520);
-         if(ObjectFind("MM2_Label") != 0)
-           {
-            ObjectCreate("MM2_Label", OBJ_TEXT, 0, Time[35], G_price_520);
-            ObjectSetText("MM2_Label", "MM2", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM2_Label", 0, Time[35], G_price_520);
-
-         if(ObjectFind("MM3_Line") != 0)
-           {
-            ObjectCreate("MM3_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_528);
-            ObjectSet("MM3_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM3_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM3_Line", 0, Time[35], G_price_528);
-         if(ObjectFind("MM3_Label") != 0)
-           {
-            ObjectCreate("MM3_Label", OBJ_TEXT, 0, Time[35], G_price_528);
-            ObjectSetText("MM3_Label", "MM3", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM3_Label", 0, Time[35], G_price_528);
-
-         if(ObjectFind("MM4_Line") != 0)
-           {
-            ObjectCreate("MM4_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_536);
-            ObjectSet("MM4_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM4_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM4_Line", 0, Time[35], G_price_536);
-         if(ObjectFind("MM4_Label") != 0)
-           {
-            ObjectCreate("MM4_Label", OBJ_TEXT, 0, Time[35], G_price_536);
-            ObjectSetText("MM4_Label", "MM4", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM4_Label", 0, Time[35], G_price_536);
-
-         if(ObjectFind("MM5_Line") != 0)
-           {
-            ObjectCreate("MM5_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_544);
-            ObjectSet("MM5_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM5_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM5_Line", 0, Time[25], G_price_544);
-         if(ObjectFind("MM5_Label") != 0)
-           {
-            ObjectCreate("MM5_Label", OBJ_TEXT, 0, Time[35], G_price_544);
-            ObjectSetText("MM5_Label", "MM5", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM5_Label", 0, Time[35], G_price_544);
-
-         if(ObjectFind("MM6_Line") != 0)
-           {
-            ObjectCreate("MM6_Line", OBJ_HLINE, 0, TimeCurrent(), G_price_552);
-            ObjectSet("MM6_Line", OBJPROP_COLOR, Monthly_Mid_Level);
-            ObjectSet("MM6_Line", OBJPROP_STYLE, STYLE_DOT);
-           }
-         else
-            ObjectMove("MM6_Line", 0, Time[35], G_price_552);
-         if(ObjectFind("MM6_Label") != 0)
-           {
-            ObjectCreate("MM6_Label", OBJ_TEXT, 0, Time[35], G_price_552);
-            ObjectSetText("MM6_Label", "MM6", 8, "Arial", Monthly_Mid_Level);
-           }
-         else
-            ObjectMove("MM6_Label", 0, Time[35], G_price_552);
-         WindowRedraw();
         }
       WindowRedraw();
       shift2=shift;
