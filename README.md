@@ -6,6 +6,7 @@
 **TRADING-DONG** was selected as an exhibition participant in the prestigious event, namely the Education For Sustainable Development (ESD)-Net 2030 event in Bali. This event is an important forum for exchanging ideas and innovations in education and sustainability, organized by UNESCO. <br>
 [ https://lnkd.in/gjNpiSUt ]
 <br>
+
 * Campus Final Project Exhibition <br>
 **TRADING-DONG** is one of the 15 best titles in the electrical engineering faculty which is participating in the campus final project exhibition. The exhibition is a place to showcase the best final projects and also a stage for presenting student final projects. <br>
 
